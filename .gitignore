@@ -1,0 +1,7 @@
+*.pk
+*.js
+*.json
+consts.py
+consts.pyc
+node_modules/
+log.txt
