@@ -16,6 +16,7 @@ c = fbchat.Client(consts.username, consts.password)
 all_messages = []
 last_ts = 1465825911774
 starting_offset = 100000
+offset = starting_offset
 initializing = True
 while initializing or len(messages) > 1:
 	initializing = False
@@ -31,5 +32,5 @@ while initializing or len(messages) > 1:
 	# for m in messages:
 	# 	print(m.timestamp)
 	all_messages.extend(messages)
-	starting_offset += LIMIT
+	offset += LIMIT
 output_obj(all_messages)
