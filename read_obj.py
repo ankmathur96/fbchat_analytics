@@ -1,9 +1,13 @@
 import sys
 import pickle
-import datetime
-import json
 
 filename = sys.argv[1]
 
-with open(filename, 'r') as in_file:
-	m = pickle.load(in_file)
+def load_file(fname):
+	with open(filename, 'r') as in_file:
+		m = pickle.load(in_file)
+		return m
+
+if __name__ == '__main__':
+	filename = sys.argv[1]
+	m = load_file(filename)

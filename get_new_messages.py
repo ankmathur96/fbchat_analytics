@@ -3,21 +3,24 @@ import consts
 import time
 import pickle
 import sys
+import read_obj
 
 LIMIT = 80
 CHAT_ID = '100000054197818'
-output_fname = sys.argv[1]
+prev_messages = sys.argv[1]
+output_fname = sys.argv[2]
 def output_obj(obj):
-	obj = obj[::-1]
 	with open(output_fname, 'w') as out_f:
 		pickle.dump(obj, out_f)
 
+prev_m = read_obj(prev_messages)
 c = fbchat.Client(consts.username, consts.password)
 all_messages = []
-last_ts = 1465825911774
-starting_offset = 100000
+last_ts = None
+ts_end = int(prev_m[-1].timestamp)
+starting_offset = 0
 initializing = True
-while initializing or len(messages) > 1:
+while len(messages) > 1 and last_ts > ts_end:
 	initializing = False
 	messages = c.getThreadInfo(CHAT_ID, offset, LIMIT, last_ts)
 	# new to old sorted, so we reverse it.
@@ -32,4 +35,5 @@ while initializing or len(messages) > 1:
 	# 	print(m.timestamp)
 	all_messages.extend(messages)
 	starting_offset += LIMIT
-output_obj(all_messages)
+all_messages = all_messages[::-1]
+output_obj(prev_m + all_messages)
