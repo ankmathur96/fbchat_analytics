@@ -14,7 +14,6 @@ with open(fname, 'r') as in_file:
 		except:
 			cleaned.append(sorted_messages[i])
 		i += 1
-		print(i)
 	print(len(cleaned))
 	print(len(messages))
 	with open(fname.split('.')[0] + '_cleaned' + '.pk', 'w') as out_file:

@@ -3,9 +3,14 @@ import consts
 import time
 import pickle
 import sys
-
-LIMIT = 80
+import signal
+import sys
+TOTAL_LIM = 50000
+LIMIT = 1000
 CHAT_ID = '100000054197818'
+BRO_CHAT_ID = '1430596130300043'
+IS_GROUP = True
+CHAT_ID = BRO_CHAT_ID
 output_fname = sys.argv[1]
 def output_obj(obj):
 	obj = obj[::-1]
@@ -14,13 +19,18 @@ def output_obj(obj):
 
 c = fbchat.Client(consts.username, consts.password)
 all_messages = []
-last_ts = 1465825911774
-starting_offset = 100000
+last_ts = None
+starting_offset = 0
 offset = starting_offset
 initializing = True
-while initializing or len(messages) > 1:
+def signal_handler(signal, frame):
+        print('You pressed Ctrl+C! Saving messages...')
+        output_obj(all_messages)
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+while initializing or len(messages) > 1 or len(all_messages) > TOTAL_LIM:
 	initializing = False
-	messages = c.getThreadInfo(CHAT_ID, offset, LIMIT, last_ts)
+	messages = c.getThreadInfo(CHAT_ID, offset, LIMIT, last_ts, is_group=IS_GROUP)
 	# new to old sorted, so we reverse it.
 	messages = sorted(messages, key=lambda x: int(x.timestamp))[::-1]
 	last_ts = int(messages[-1].timestamp)
