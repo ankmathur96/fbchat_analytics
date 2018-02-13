@@ -4,7 +4,7 @@ import datetime
 import json
 fname = sys.argv[1]
 SECONDS_IN_DAY = 86400
-with open(fname, 'r') as in_file:
+with open(fname, 'rb') as in_file:
 	messages = pickle.load(in_file)
 chart_data = []
 first_ts = messages[0].timestamp
